@@ -76,12 +76,14 @@ class NuSlerpMerge(MergeMethod):
         output_weight: WeightInfo,
         tensors: GatherTensors,
         tensor_parameters: ImmutableMap[ModelReference, ImmutableMap[str, Any]],
+        parameters: ImmutableMap[str, Any],
         **_kwargs,
     ) -> Task:
         return NuSlerpTask(
             gather_tensors=tensors,
             tensor_parameters=tensor_parameters,
             parameter_name=output_weight.name,
+            row_wise=parameters["nuslerp_row_wise"],
         )
 
 
@@ -95,17 +97,23 @@ def nuslerp(
     def _normalize(x: torch.Tensor, eps: float = 1e-7) -> torch.Tensor:
         return x / torch.norm(x, dim=-1, keepdim=True).clamp(min=eps)
 
+    if dim != -1:
+        v0 = v0.transpose(dim, -1)
+        v1 = v1.transpose(dim, -1)
+
     v0_u = _normalize(v0)
     v1_u = _normalize(v1)
 
-    cos_theta = torch.sum(v0_u * v1_u, dim=dim, keepdim=True)
+    cos_theta = torch.sum(v0_u * v1_u, dim=-1, keepdim=True)
     theta = torch.acos(cos_theta.clamp(-1, 1))
     sin_theta = torch.sin(theta)
 
-    colinear = sin_theta.abs() < eps
+    colinear = (sin_theta.abs() < eps).squeeze()
 
     res = (torch.sin((1 - t) * theta) * v0 + torch.sin(t * theta) * v1) / sin_theta
     # Use linear interpolation for (nearly) colinear vectors
     res[colinear] = (1 - t) * v0[colinear] + t * v1[colinear]
 
+    if dim != -1:
+        res = res.transpose(dim, -1)
     return res
