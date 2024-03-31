@@ -24,7 +24,8 @@ dependencies = [
     "sentencepiece",
     "protobuf",
     "optuna",
-    "lm-eval"
+    "lm-eval",
+    "cmaes"
 ]
 
 [project.optional-dependencies]
