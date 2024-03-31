@@ -23,6 +23,8 @@ dependencies = [
     "typing-extensions",
     "sentencepiece",
     "protobuf",
+    "optuna",
+    "lm-eval"
 ]
 
 [project.optional-dependencies]
