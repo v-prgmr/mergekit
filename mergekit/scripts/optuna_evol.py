@@ -72,7 +72,7 @@ def objective(trial):
 
 if __name__ == "__main__":
     sampler = optuna.samplers.CmaEsSampler()
-    study = optuna.create_study(sampler=sampler)
+    study = optuna.create_study(sampler=sampler, direction="maximize")
     study.optimize(objective, n_trials=2)
     best_params = study.best_params
     print(best_params)
