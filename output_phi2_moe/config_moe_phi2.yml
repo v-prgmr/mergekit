@@ -1,0 +1,10 @@
+base_model: microsoft/phi-2
+gate_mode: hidden
+dtype: float16
+experts:
+  - source_model: "path to finetuned phi2 expert1"
+    positive_prompts:
+    - "positive prompts for expert1"
+  - source_model: "path to finetuned phi2 expert2"
+    positive_prompts:
+    - "positive prompts for expert2"
