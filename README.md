@@ -1,3 +1,27 @@
+# Phi-2 MoE generation
+
+The [mergekit](https://github.com/arcee-ai/mergekit) in its original flavour does not support [microsoft/phi-2](https://huggingface.co/microsoft/phi-2) (at the time of writing this article) because of mismatch in layers names. This fork was done to make the mergekit work with [microsoft/phi-2](https://huggingface.co/microsoft/phi-2) based SLMs to create a "Phi2-Mixture of Experts" model. Follow the instructions below to create your own Mixture of Experts from multiple individual phi-2 experts. Please checkout the "phi2xtral" branch to start with.
+
+## Instructions for creating Phi-2 MoE
+Checkout the `phi2xtral` branch of this repository.
+## Merging experts into MoE
+- Craete a merge configuration like [config_moe_phi2.yaml](output_phi2_moe/config_moe_phi2.yml) where you either pass in the absolute path of the expert model's directory or to the expert's huggingface repository.
+- Run [phi2_moe.py](mergekit/scripts/phi2_moe.py) by passing the following arguments to it 
+  - merge configuration: [config_moe_phi2.yaml](output_phi2_moe/config_moe_phi2.yml) 
+  - path to output folder: for example you can use this folder [output_phi2_moe](output_phi2_moe) (as it has the configuration files needed for inferencing the MoE model)
+  - load-in-4bit 
+  - trust-remote-code
+  - therefore the run command looks like: `phi2_moe.py config_moe_phi2.yaml output_phi2_moe --load-in-4bit --trust-remote-code`
+- This should now create the Mixture of Experts model from your individual experts as per the merge configuration inside the output directory.
+- **Note**: If you are using your own custom finetuned phi-2, that was fine tuned using techniques like Qlora, merge the adapter weights back to the base model before using it as one of the experts in the mergekit.
+  - You can read about merging the adapters to base model here: https://kaitchup.substack.com/p/lora-adapters-when-a-naive-merge
+## Inference
+- You will find the customized configuration and modelling file within the `output_phi2_moe` folder.
+  - You will need `configuration_phi_2.py` and `m̀odelling_phi_2.py` for inference of your Phi2MoE.
+  - Create your inference script as you would normally do using the huggingface transformer library and load the MoE you just craeted above.
+  - The model will use the customized configuration files present inside the output folder as per the `config.json` that gets created from the previous step using `phi2_moe.py`
+- Enjoy your Phi2MoE!
+
 # mergekit
 
 `mergekit` is a toolkit for merging pre-trained language models. `mergekit` uses an out-of-core approach to perform unreasonably elaborate merges in resource-constrained situations. Merges can be run entirely on CPU or accelerated with as little as 8 GB of VRAM. Many merging algorithms are supported, with more coming as they catch my attention.
