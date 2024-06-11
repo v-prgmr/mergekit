@@ -333,7 +333,7 @@ def build(
         out_dtype = None
 
     logging.info("Copying parameters...")
-    MISTRAL_INFO = mergekit.architecture.PHI2_INFO
+    MISTRAL_INFO = mergekit.architecture.PHI3_INFO
     for tensor_name in MISTRAL_INFO.pre_weight_names + MISTRAL_INFO.post_weight_names:
         tensor = base_loader.get_tensor(tensor_name)
         if not out_dtype:
