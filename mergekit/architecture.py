@@ -429,6 +429,26 @@ PHI2_INFO_AGAIN_BUT_DIFFERENT = StaticTensorNames(
     ],
 )
 
+PHI3_INFO = StaticTensorNames(
+    name="Phi3ForCausalLM",
+    pre_weight_names=["model.embed_tokens.weight"],
+    post_weight_names=[
+        "lm_head.weight",
+        "model.norm.weight",
+    ],
+    embed_weight_names=["model.embed_tokens.weight", "lm_head.weight"],
+    layer_prefix_format="model.layers.{idx}",
+    layer_weight_suffixes=[
+        "mlp.down_proj.weight",
+        "mlp.gate_up_proj.weight",
+        "input_layernorm.weight",
+        "self_attn.o_proj.weight",
+        "self_attn.qkv_proj.weight",
+        "post_attention_layernorm.weight",
+        "input_layernorm.weight"
+    ],
+    num_layers_key="n_layer",
+)
 
 BAICHUAN_INFO = StaticTensorNames(
     name="BaichuanForCausalLM",
