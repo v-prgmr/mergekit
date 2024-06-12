@@ -1,5 +1,5 @@
 # Phi-3 MoE generation
-
+![phi3xtral.jpg](output_phi3_moe%2Fphi3xtral.jpg)
 The [mergekit](https://github.com/arcee-ai/mergekit) in its original flavour does not support [microsoft/phi-3](https://huggingface.co/collections/microsoft/phi-3-6626e15e9585a200d2d761e3) (at the time of writing this article) because of mismatch in layers names. This fork was done to make the mergekit work with [microsoft/phi-3](https://huggingface.co/collections/microsoft/phi-3-6626e15e9585a200d2d761e3) based SLMs to create a "Phi2-Mixture of Experts" model. Follow the instructions below to create your own Mixture of Experts from multiple individual phi-3 experts. Please checkout the "phi3xtral" branch to start with.
 
 ## Instructions for creating Phi-3 MoE
