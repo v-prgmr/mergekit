@@ -11,7 +11,13 @@ Checkout the `phi2xtral` branch of this repository.
   - path to output folder: for example you can use this folder [output_phi2_moe](output_phi2_moe) (as it has the configuration files needed for inferencing the MoE model)
   - load-in-4bit 
   - trust-remote-code
-  - therefore the run command looks like: `phi2_moe.py config_moe_phi2.yaml output_phi2_moe --load-in-4bit --trust-remote-code`
+  - allow-crimes
+  - out-shard-size 1B
+  - lazy-unpickle
+  - copy-tokenizer
+  - i-understand-this-is-not-useful-without-training
+  - therefore the run command looks like: 
+    - `python /mergekit/scripts/phi2_moe.py /output_phi2_moe/config_moe_phi2.yaml output_phi2_moe --load-in-4bit --trust-remote-code --allow-crimes --out-shard-size 1B --lazy-unpickle --copy-tokenizer --i-understand-this-is-not-useful-without-training`
 - This should now create the Mixture of Experts model from your individual experts as per the merge configuration inside the output directory.
 - **Note**: If you are using your own custom finetuned phi-2, that was fine tuned using techniques like Qlora, merge the adapter weights back to the base model before using it as one of the experts in the mergekit.
   - You can read about merging the adapters to base model here: https://kaitchup.substack.com/p/lora-adapters-when-a-naive-merge
